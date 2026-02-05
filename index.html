@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple TTS - Lector de Texto a Voz Profesional</title>
+    <meta name="description" content="Transforma tu lectura web con Simple TTS. Una extensión de Chrome gratuita, privada y personalizable para convertir texto a voz. Ideal para productividad y accesibilidad.">
+    <meta name="keywords" content="TTS, text to speech, texto a voz, chrome extension, accesibilidad, productividad, lector de pantalla, voz natural, simple tts">
+    <meta name="author" content="Abdell (@abdell1999)">
+    <meta name="robots" content="index, follow">
+
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://abdell1999.github.io/simpletts-landing/">
+    <meta property="og:title" content="Simple TTS - Lector de Texto a Voz Profesional">
+    <meta property="og:description" content="Transforma tu lectura web con Simple TTS. Extensión gratuita, privada y personalizable.">
+    <meta property="og:image" content="https://abdell1999.github.io/simpletts-landing/assets/images/icon128.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://abdell1999.github.io/simpletts-landing/">
+    <meta property="twitter:title" content="Simple TTS - Lector de Texto a Voz Profesional">
+    <meta property="twitter:description" content="Transforma tu lectura web con Simple TTS. Extensión gratuita, privada y personalizable.">
+    <meta property="twitter:image" content="https://abdell1999.github.io/simpletts-landing/assets/images/icon128.png">
+
+    <link rel="canonical" href="https://abdell1999.github.io/simpletts-landing/">
+    <link rel="icon" href="assets/images/icon128.png" type="image/png">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Simple TTS",
+      "operatingSystem": "Chrome, Edge, Brave",
+      "applicationCategory": "BrowserApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Simple TTS transforma tu experiencia de lectura en la web. Lectura fluida, privada y personalizable utilizando tecnología nativa.",
+      "image": "https://abdell1999.github.io/simpletts-landing/assets/images/icon128.png",
+      "author": {
+          "@type": "Person",
+          "name": "Abdell",
+          "url": "https://github.com/abdell1999"
+      }
+    }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #2563eb, #4f46e5);
+        }
+        .dark .text-gradient {
+            background-image: linear-gradient(to right, #60a5fa, #818cf8);
+        }
+
+        /* Ambient Glow */
+        .glow-bg {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(0,0,0,0) 70%);
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Accessibility: Reduce Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .animate-float, .aos-animate {
+                animation: none !important;
+                transform: none !important;
+                transition: none !important;
+            }
+            html {
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+    <script>
+        // Check for saved user preference, if any, on load of the website
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300 overflow-x-hidden selection:bg-brand-500 selection:text-white">
+
+    <!-- Ambient Glow Background -->
+    <div class="glow-bg dark:opacity-30" aria-hidden="true"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 border-b border-transparent" aria-label="Navegación principal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <img src="assets/images/icon128.png" alt="Logotipo de Simple TTS" class="w-10 h-10 rounded-xl shadow-lg">
+                    <span class="font-extrabold text-2xl text-slate-900 dark:text-white tracking-tight">Simple TTS</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle" class="p-2.5 rounded-full bg-white/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-all shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500" aria-label="Cambiar entre modo claro y oscuro">
+                        <svg class="hidden dark:block w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg class="block dark:hidden w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <a href="https://chromewebstore.google.com/detail/mnnhakddcadkcichdgimoennpkfkcalk" target="_blank" class="hidden sm:inline-flex bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-lg shadow-brand-500/30 hover:shadow-brand-500/50 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
+                        Instalar Gratis
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <header class="relative pt-32 pb-24 lg:pt-40 lg:pb-32 dark:bg-slate-900 transition-colors duration-300">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <div data-aos="fade-up" data-aos-duration="1000">
+                    <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-8 leading-tight">
+                        Transforma tu lectura <br/>
+                        <span class="text-gradient">en la web</span>
+                    </h1>
+                    <p class="mt-4 text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-12 leading-relaxed">
+                        Simple TTS ofrece una lectura fluida, privada y altamente personalizable utilizando tecnología nativa. Ideal para productividad, accesibilidad y aprendizaje.
+                    </p>
+                    <div class="flex justify-center gap-4 flex-col sm:flex-row items-center">
+                        <a href="https://chromewebstore.google.com/detail/mnnhakddcadkcichdgimoennpkfkcalk" target="_blank" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white dark:bg-brand-600 dark:hover:bg-brand-700 px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 shadow-xl hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
+                            Descargar en Chrome Store
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Main Screenshot with Float Animation -->
+                <div class="mt-20 relative mx-auto max-w-6xl animate-float" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1200">
+                    <div class="rounded-2xl shadow-2xl overflow-hidden border border-slate-200/50 bg-white/50 dark:bg-slate-800/50 dark:border-slate-700/50 backdrop-blur-sm p-2 aspect-video flex items-center justify-center transition-colors duration-300 ring-1 ring-black/5 dark:ring-white/10">
+                        <div class="w-full h-full rounded-xl overflow-hidden relative bg-slate-100 dark:bg-slate-800">
+                            <!-- Light Mode Image -->
+                            <img src="assets/images/hero-light.png" alt="Interfaz principal de Simple TTS en modo claro" class="w-full h-full object-cover dark:hidden transform scale-100 hover:scale-[1.01] transition-transform duration-700">
+                            <!-- Dark Mode Image -->
+                            <img src="assets/images/hero-dark.png" alt="Interfaz principal de Simple TTS en modo oscuro" class="w-full h-full object-cover hidden dark:block transform scale-100 hover:scale-[1.01] transition-transform duration-700">
+                        </div>
+                    </div>
+                    <!-- Decorative Elements -->
+                    <div class="absolute -z-10 -bottom-10 -right-10 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl dark:bg-blue-500/10" aria-hidden="true"></div>
+                    <div class="absolute -z-10 -top-10 -left-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl dark:bg-purple-500/10" aria-hidden="true"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Features Overview -->
+        <section class="bg-slate-50 py-24 border-t border-slate-100 dark:bg-slate-800/50 dark:border-slate-800 transition-colors duration-300 relative overflow-hidden" aria-labelledby="features-heading">
+            <h2 id="features-heading" class="sr-only">Características Principales</h2>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl shadow-slate-200/50 dark:shadow-none hover:-translate-y-1 transition-all duration-300 border border-slate-100 dark:border-slate-700" data-aos="fade-up" data-aos-delay="0">
+                        <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/20" aria-hidden="true">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Control de Audio Total</h3>
+                        <ul class="space-y-3 text-slate-600 dark:text-slate-300 text-sm">
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2" aria-hidden="true"></span>Cola Dinámica de textos</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2" aria-hidden="true"></span>Ajuste Preciso de tono</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2" aria-hidden="true"></span>Navegación inteligente</li>
+                        </ul>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl shadow-slate-200/50 dark:shadow-none hover:-translate-y-1 transition-all duration-300 border border-slate-100 dark:border-slate-700" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/20" aria-hidden="true">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Privacidad y Diseño</h3>
+                        <ul class="space-y-3 text-slate-600 dark:text-slate-300 text-sm">
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-2" aria-hidden="true"></span>100% Privado y Local</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-2" aria-hidden="true"></span>Tema Auto Claro/Oscuro</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-2" aria-hidden="true"></span>Funciona Offline</li>
+                        </ul>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl shadow-slate-200/50 dark:shadow-none hover:-translate-y-1 transition-all duration-300 border border-slate-100 dark:border-slate-700" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-purple-500/20" aria-hidden="true">
+                             <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">3 Modos de Visualización</h3>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                            Adapta la extensión a tu entorno de trabajo con nuestros modos diseñados para cada ocasión: Flotante, Pop-out y Oculto.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Modes Section (Redesigned) -->
+        <section class="bg-white py-24 dark:bg-slate-900 transition-colors duration-300 overflow-hidden" aria-labelledby="modes-heading">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-24" data-aos="fade-up">
+                    <h2 id="modes-heading" class="text-3xl font-extrabold text-slate-900 dark:text-white sm:text-5xl">Visualización a tu medida</h2>
+                    <p class="mt-4 text-xl text-slate-600 dark:text-slate-300">Tres formas diferentes de interactuar, una misma experiencia fluida.</p>
+                </div>
+
+                <div class="space-y-32">
+                    <!-- Mode 1: Modal Flotante -->
+                    <div class="flex flex-col lg:flex-row items-center gap-16" data-aos="fade-right">
+                        <div class="lg:w-1/2 order-2 lg:order-1 relative">
+                            <div class="absolute inset-0 bg-blue-600/10 dark:bg-blue-600/5 rounded-3xl blur-2xl transform rotate-3" aria-hidden="true"></div>
+                            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 aspect-video relative group transition-colors duration-300 z-10">
+                                <div class="absolute top-0 left-0 right-0 bg-black/50 p-2 text-white text-xs text-center opacity-0 group-hover:opacity-100 transition-opacity z-10" aria-hidden="true">mode-floating-light.png / dark.png</div>
+                                <img src="assets/images/mode-floating-light.png" alt="Captura de pantalla del modo Modal Flotante en tema claro" class="w-full h-full object-cover dark:hidden transform group-hover:scale-105 transition-transform duration-700">
+                                <img src="assets/images/mode-floating-dark.png" alt="Captura de pantalla del modo Modal Flotante en tema oscuro" class="w-full h-full object-cover hidden dark:block transform group-hover:scale-105 transition-transform duration-700">
+                            </div>
+                        </div>
+                        <div class="lg:w-1/2 order-1 lg:order-2">
+                            <div class="inline-block p-3 rounded-2xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mb-6" aria-hidden="true">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                            </div>
+                            <h3 class="text-3xl font-bold text-slate-900 dark:text-white mb-6">Modal Flotante</h3>
+                            <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
+                                Un reproductor moderno con efecto glassmorphism que vive sobre tu página web. Diseñado para ser elegante y funcional.
+                            </p>
+                            <div class="space-y-4">
+                                <div class="flex items-center p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl">
+                                    <div class="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm mr-4" aria-hidden="true">
+                                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+                                    </div>
+                                    <span class="font-semibold text-slate-700 dark:text-slate-200">Redimensionable desde cualquier esquina</span>
+                                </div>
+                                <div class="flex items-center p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl">
+                                    <div class="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm mr-4" aria-hidden="true">
+                                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                                    </div>
+                                    <span class="font-semibold text-slate-700 dark:text-slate-200">Arrastrable con memoria de posición</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mode 2: Ventana Independiente -->
+                    <div class="flex flex-col lg:flex-row items-center gap-16" data-aos="fade-left">
+                        <div class="lg:w-1/2 order-1">
+                            <div class="inline-block p-3 rounded-2xl bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mb-6" aria-hidden="true">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </div>
+                            <h3 class="text-3xl font-bold text-slate-900 dark:text-white mb-6">Ventana Independiente</h3>
+                            <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
+                                Perfecto para multitarea. Desacopla el reproductor y sigue escuchando mientras cambias de pestaña o usas otra app.
+                            </p>
+                            <div class="space-y-4">
+                                 <div class="flex items-center p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl">
+                                    <div class="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm mr-4" aria-hidden="true">
+                                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                                    </div>
+                                    <span class="font-semibold text-slate-700 dark:text-slate-200">Control total fuera del navegador</span>
+                                </div>
+                                <div class="flex items-center p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl">
+                                    <div class="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm mr-4" aria-hidden="true">
+                                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                    </div>
+                                    <span class="font-semibold text-slate-700 dark:text-slate-200">Siempre visible encima de otras ventanas</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:w-1/2 order-2 relative">
+                            <div class="absolute inset-0 bg-purple-600/10 dark:bg-purple-600/5 rounded-3xl blur-2xl transform -rotate-3" aria-hidden="true"></div>
+                            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 aspect-video relative group transition-colors duration-300 z-10">
+                                 <div class="absolute top-0 left-0 right-0 bg-black/50 p-2 text-white text-xs text-center opacity-0 group-hover:opacity-100 transition-opacity z-10" aria-hidden="true">mode-popout-light.png / dark.png</div>
+                                <img src="assets/images/mode-popout-light.png" alt="Captura de pantalla del modo Ventana Independiente en tema claro" class="w-full h-full object-cover dark:hidden transform group-hover:scale-105 transition-transform duration-700">
+                                <img src="assets/images/mode-popout-dark.png" alt="Captura de pantalla del modo Ventana Independiente en tema oscuro" class="w-full h-full object-cover hidden dark:block transform group-hover:scale-105 transition-transform duration-700">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mode 3: Segundo Plano -->
+                    <div class="flex flex-col lg:flex-row items-center gap-16" data-aos="fade-right">
+                        <div class="lg:w-1/2 order-2 lg:order-1 relative">
+                            <div class="absolute inset-0 bg-emerald-600/10 dark:bg-emerald-600/5 rounded-3xl blur-2xl transform rotate-2" aria-hidden="true"></div>
+                            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 aspect-video relative group transition-colors duration-300 z-10">
+                                 <div class="absolute top-0 left-0 right-0 bg-black/50 p-2 text-white text-xs text-center opacity-0 group-hover:opacity-100 transition-opacity z-10" aria-hidden="true">mode-hidden-light.png / dark.png</div>
+                                <img src="assets/images/mode-hidden-light.png" alt="Captura de pantalla del modo Segundo Plano en tema claro" class="w-full h-full object-cover dark:hidden transform group-hover:scale-105 transition-transform duration-700">
+                                <img src="assets/images/mode-hidden-dark.png" alt="Captura de pantalla del modo Segundo Plano en tema oscuro" class="w-full h-full object-cover hidden dark:block transform group-hover:scale-105 transition-transform duration-700">
+                            </div>
+                        </div>
+                        <div class="lg:w-1/2 order-1 lg:order-2">
+                            <div class="inline-block p-3 rounded-2xl bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 mb-6" aria-hidden="true">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                            </div>
+                            <h3 class="text-3xl font-bold text-slate-900 dark:text-white mb-6">Modo Oculto</h3>
+                            <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
+                                Lectura sin distracciones visuales. Todo el poder de la síntesis de voz, sin elementos en pantalla que interfieran.
+                            </p>
+                             <div class="space-y-4">
+                                 <div class="flex items-center p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl">
+                                    <div class="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm mr-4" aria-hidden="true">
+                                        <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                                    </div>
+                                    <span class="font-semibold text-slate-700 dark:text-slate-200">Gestión completa desde la barra de herramientas</span>
+                                </div>
+                                <div class="flex items-center p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl">
+                                    <div class="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm mr-4" aria-hidden="true">
+                                        <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    </div>
+                                    <span class="font-semibold text-slate-700 dark:text-slate-200">Cero elementos visuales sobre tu contenido</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Usage Guide -->
+        <section id="guia" class="py-24 dark:bg-slate-900 transition-colors duration-300" aria-labelledby="usage-heading">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h2 id="usage-heading" class="text-3xl font-extrabold text-slate-900 dark:text-white mb-8">Guía de Uso</h2>
+
+                        <div class="space-y-8">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold" aria-hidden="true">1</div>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-lg font-bold text-slate-900 dark:text-white">Seleccionar y Escuchar</h4>
+                                    <p class="mt-2 text-slate-600 dark:text-slate-300">Resalta cualquier texto en una página web. Presiona <kbd class="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded text-sm font-mono text-slate-700 dark:text-slate-200">Alt + R</kbd> o haz clic derecho y selecciona "Leer texto seleccionado".</p>
+                                </div>
+                            </div>
+
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold" aria-hidden="true">2</div>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-lg font-bold text-slate-900 dark:text-white">Controlar la Reproducción</h4>
+                                    <p class="mt-2 text-slate-600 dark:text-slate-300">Usa el reproductor flotante para pausar, detener o cambiar la velocidad. Puedes moverlo a cualquier parte de la pantalla.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold" aria-hidden="true">3</div>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-lg font-bold text-slate-900 dark:text-white">Cola de Lectura</h4>
+                                    <p class="mt-2 text-slate-600 dark:text-slate-300">Mientras escuchas, selecciona otro texto y usa el menú contextual para "Agregar a la cola". Se reproducirá automáticamente al terminar el actual.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Usage Screenshot -->
+                    <div class="rounded-2xl shadow-xl overflow-hidden border border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700 aspect-square flex items-center justify-center transition-colors duration-300 relative group">
+                         <div class="absolute top-0 left-0 right-0 bg-black/50 p-2 text-white text-xs text-center opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true">usage-context-light.png / dark.png</div>
+                        <img src="assets/images/usage-context-light.png" alt="Captura de pantalla del menú contextual para agregar a la cola (Claro)" class="w-full h-full object-cover dark:hidden">
+                        <img src="assets/images/usage-context-dark.png" alt="Captura de pantalla del menú contextual para agregar a la cola (Oscuro)" class="w-full h-full object-cover hidden dark:block">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shortcuts -->
+        <section class="bg-slate-900 dark:bg-slate-950 py-24 text-white transition-colors duration-300" aria-labelledby="shortcuts-heading">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 id="shortcuts-heading" class="text-3xl font-extrabold mb-12">Atajos de Teclado</h2>
+                <div class="bg-slate-800 dark:bg-slate-900 rounded-2xl overflow-hidden shadow-2xl transition-colors duration-300">
+                    <table class="min-w-full divide-y divide-slate-700 dark:divide-slate-800">
+                        <caption class="sr-only">Lista de atajos de teclado disponibles</caption>
+                        <thead class="bg-slate-700 dark:bg-slate-800">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Atajo</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700 dark:divide-slate-800">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-left"><kbd class="px-3 py-1 bg-slate-600 dark:bg-slate-700 rounded-lg font-mono text-blue-300">Alt + R</kbd></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-left text-slate-300">Leer selección / Agregar a cola</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-left"><kbd class="px-3 py-1 bg-slate-600 dark:bg-slate-700 rounded-lg font-mono text-blue-300">Alt + P</kbd></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-left text-slate-300">Pausar / Reanudar</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-left"><kbd class="px-3 py-1 bg-slate-600 dark:bg-slate-700 rounded-lg font-mono text-blue-300">Alt + S</kbd></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-left text-slate-300">Detener lectura</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Story / Motivation -->
+        <section id="historia" class="py-24 bg-white dark:bg-slate-900 transition-colors duration-300 border-t border-slate-100 dark:border-slate-800" aria-labelledby="story-heading">
+             <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                 <h2 id="story-heading" class="text-3xl font-extrabold text-slate-900 dark:text-white mb-6">Motivación</h2>
+                 <p class="text-xl text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                     Más que una extensión, una solución personal. <strong>Simple TTS</strong> nació de la necesidad real de optimizar el tiempo de lectura en la web. Desarrollada desde cero para ofrecer una experiencia auditiva superior —aprovechando la naturalidad de las voces de Google— esta herramienta prioriza la funcionalidad sobre la complejidad.
+                 </p>
+                 <p class="text-lg text-slate-500 dark:text-slate-400 font-medium italic">
+                     "Lo que comenzó como una utilidad personal para un lector voraz, ahora está disponible para todos."
+                 </p>
+             </div>
+        </section>
+
+        <!-- Installation CTA -->
+        <section class="py-24 bg-blue-600 dark:bg-blue-700 transition-colors duration-300" aria-labelledby="cta-heading">
+            <div class="max-w-4xl mx-auto px-4 text-center">
+                <h2 id="cta-heading" class="text-3xl font-extrabold text-white mb-4">Empieza a escuchar hoy mismo</h2>
+                <p class="text-blue-100 text-xl mb-10">Instalación segura y oficial a través de Chrome Web Store.</p>
+                <a href="https://chromewebstore.google.com/detail/mnnhakddcadkcichdgimoennpkfkcalk" target="_blank" class="bg-white text-blue-600 dark:bg-slate-900 dark:text-blue-400 px-10 py-4 rounded-2xl font-bold text-lg shadow-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors inline-flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 12 12s12-5.373 12-12C24 5.373 18.627 0 12 0zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm-1 3v6l5 3-5 3v6h2v-5l4-2.5v-3L13 10V5h-2z"/></svg>
+                    Instalar Extensión
+                </a>
+            </div>
+        </section>
+
+        <!-- Privacy Section -->
+        <section id="privacidad" class="bg-white py-24 border-t border-slate-100 dark:bg-slate-900 dark:border-slate-800 transition-colors duration-300" aria-labelledby="privacy-heading">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/50 mb-6" aria-hidden="true">
+                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+                <h2 id="privacy-heading" class="text-3xl font-extrabold text-slate-900 dark:text-white mb-6">Política de Privacidad</h2>
+                <p class="text-xl text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Simple TTS respeta tu privacidad. <strong class="text-slate-900 dark:text-white">No recopilamos, almacenamos ni enviamos ninguna información</strong> personal o historial de navegación. La extensión funciona completamente offline y no comunica datos a servidores externos.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-50 border-t border-slate-200 dark:bg-slate-900 dark:border-slate-800 py-12 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-slate-500 dark:text-slate-400">Creado por <a href="https://github.com/abdell1999" class="text-blue-600 dark:text-blue-400 font-medium hover:underline focus:outline-none focus:ring-2 focus:ring-brand-500 rounded">Abdell (@abdell1999)</a>.</p>
+            <nav class="flex gap-6" aria-label="Enlaces del pie de página">
+                <a href="mailto:abdull26071999@gmail.com" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded px-1">Soporte</a>
+                <a href="https://github.com/abdell1999" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded px-1">GitHub</a>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- AOS Library Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // Initialize AOS with Reduced Motion Check
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        AOS.init({
+            once: true,
+            offset: 50,
+            duration: 800,
+            disable: prefersReducedMotion // Disable AOS animations if reduced motion is preferred
+        });
+
+        // Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+
+        themeToggleBtn.addEventListener('click', function() {
+            if (localStorage.theme === 'dark') {
+                localStorage.theme = 'light';
+                document.documentElement.classList.remove('dark');
+            } else {
+                localStorage.theme = 'dark';
+                document.documentElement.classList.add('dark');
+            }
+        });
+
+        // Navbar Glass Effect on Scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            // Disable glass effect logic if reduced motion (optional, but keeps visual stability)
+            // Actually, keep it for aesthetics, but maybe remove transition if reduced motion?
+            // The CSS handles transitions via media query overrides generally.
+
+            if (window.scrollY > 20) {
+                navbar.classList.add('glass-nav');
+                navbar.classList.add('shadow-sm');
+                navbar.classList.remove('border-transparent');
+                navbar.classList.add('border-slate-200');
+                navbar.classList.add('dark:border-slate-800');
+            } else {
+                navbar.classList.remove('glass-nav');
+                navbar.classList.remove('shadow-sm');
+                navbar.classList.remove('border-slate-200');
+                navbar.classList.remove('dark:border-slate-800');
+                navbar.classList.add('border-transparent');
+            }
+        });
+    </script>
+</body>
+</html>
