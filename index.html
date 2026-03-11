@@ -61,42 +61,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       }
     }
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            900: '#1e3a8a',
-                        }
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Tailwind CSS -->
+    <link href="assets/css/main.css" rel="stylesheet">
+    <style>
         .glass-nav {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
@@ -172,7 +144,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <svg class="hidden dark:block w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                         <svg class="block dark:hidden w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
-                    <a href="https://chromewebstore.google.com/detail/mnnhakddcadkcichdgimoennpkfkcalk" target="_blank" class="hidden sm:inline-flex bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-lg shadow-brand-500/30 hover:shadow-brand-500/50 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
+                    <a href="https://chromewebstore.google.com/detail/mnnhakddcadkcichdgimoennpkfkcalk" target="_blank" class="hidden sm:inline-flex bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:focus:ring-offset-slate-900 dark:bg-blue-700 dark:hover:bg-blue-800 dark:shadow-blue-500/30 dark:hover:shadow-blue-500/50">
                         Instalar Gratis
                     </a>
                 </div>
@@ -193,7 +165,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         Simple TTS ofrece una lectura fluida, privada y altamente personalizable utilizando tecnología nativa. Ideal para productividad, accesibilidad y aprendizaje.
                     </p>
                     <div class="flex justify-center gap-4 flex-col sm:flex-row items-center">
-                        <a href="https://chromewebstore.google.com/detail/mnnhakddcadkcichdgimoennpkfkcalk" target="_blank" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white dark:bg-brand-600 dark:hover:bg-brand-700 px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 shadow-xl hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
+                        <a href="https://chromewebstore.google.com/detail/mnnhakddcadkcichdgimoennpkfkcalk" target="_blank" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-100 dark:hover:bg-white dark:text-slate-900 px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 shadow-xl hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
                             Descargar en Chrome Store
                         </a>
                     </div>
@@ -204,9 +176,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="rounded-2xl shadow-2xl overflow-hidden border border-slate-200/50 bg-white/50 dark:bg-slate-800/50 dark:border-slate-700/50 backdrop-blur-sm p-2 aspect-video flex items-center justify-center transition-colors duration-300 ring-1 ring-black/5 dark:ring-white/10">
                         <div class="w-full h-full rounded-xl overflow-hidden relative bg-slate-100 dark:bg-slate-800">
                             <!-- Light Mode Image -->
-                            <img src="assets/images/hero-light.png" alt="Interfaz principal de Simple TTS en modo claro" class="w-full h-full object-cover dark:hidden transform scale-100 hover:scale-[1.01] transition-transform duration-700">
+                            <img src="assets/images/hero-light.webp" alt="Interfaz principal de Simple TTS en modo claro" class="w-full h-full object-cover dark:hidden transform scale-100 hover:scale-[1.01] transition-transform duration-700">
                             <!-- Dark Mode Image -->
-                            <img src="assets/images/hero-dark.png" alt="Interfaz principal de Simple TTS en modo oscuro" class="w-full h-full object-cover hidden dark:block transform scale-100 hover:scale-[1.01] transition-transform duration-700">
+                            <img src="assets/images/hero-dark.webp" alt="Interfaz principal de Simple TTS en modo oscuro" class="w-full h-full object-cover hidden dark:block transform scale-100 hover:scale-[1.01] transition-transform duration-700">
                         </div>
                     </div>
                     <!-- Decorative Elements -->
@@ -275,9 +247,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <div class="lg:w-1/2 order-2 lg:order-1 relative">
                             <div class="absolute inset-0 bg-blue-600/10 dark:bg-blue-600/5 rounded-3xl blur-2xl transform rotate-3" aria-hidden="true"></div>
                             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 aspect-video relative group transition-colors duration-300 z-10">
-                                <div class="absolute top-0 left-0 right-0 bg-black/50 p-2 text-white text-xs text-center opacity-0 group-hover:opacity-100 transition-opacity z-10" aria-hidden="true">mode-floating-light.png / dark.png</div>
-                                <img src="assets/images/mode-floating-light.png" alt="Captura de pantalla del modo Modal Flotante en tema claro" class="w-full h-full object-cover dark:hidden transform group-hover:scale-105 transition-transform duration-700">
-                                <img src="assets/images/mode-floating-dark.png" alt="Captura de pantalla del modo Modal Flotante en tema oscuro" class="w-full h-full object-cover hidden dark:block transform group-hover:scale-105 transition-transform duration-700">
+                                <img src="assets/images/mode-floating-light.webp" alt="Captura de pantalla del modo Modal Flotante en tema claro" class="w-full h-full object-cover dark:hidden transform group-hover:scale-105 transition-transform duration-700">
+                                <img src="assets/images/mode-floating-dark.webp" alt="Captura de pantalla del modo Modal Flotante en tema oscuro" class="w-full h-full object-cover hidden dark:block transform group-hover:scale-105 transition-transform duration-700">
                             </div>
                         </div>
                         <div class="lg:w-1/2 order-1 lg:order-2">
@@ -333,9 +304,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <div class="lg:w-1/2 order-2 relative">
                             <div class="absolute inset-0 bg-purple-600/10 dark:bg-purple-600/5 rounded-3xl blur-2xl transform -rotate-3" aria-hidden="true"></div>
                             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 aspect-video relative group transition-colors duration-300 z-10">
-                                 <div class="absolute top-0 left-0 right-0 bg-black/50 p-2 text-white text-xs text-center opacity-0 group-hover:opacity-100 transition-opacity z-10" aria-hidden="true">mode-popout-light.png / dark.png</div>
-                                <img src="assets/images/mode-popout-light.png" alt="Captura de pantalla del modo Ventana Independiente en tema claro" class="w-full h-full object-cover dark:hidden transform group-hover:scale-105 transition-transform duration-700">
-                                <img src="assets/images/mode-popout-dark.png" alt="Captura de pantalla del modo Ventana Independiente en tema oscuro" class="w-full h-full object-cover hidden dark:block transform group-hover:scale-105 transition-transform duration-700">
+                                <img src="assets/images/mode-popout-light.webp" alt="Captura de pantalla del modo Ventana Independiente en tema claro" class="w-full h-full object-cover dark:hidden transform group-hover:scale-105 transition-transform duration-700">
+                                <img src="assets/images/mode-popout-dark.webp" alt="Captura de pantalla del modo Ventana Independiente en tema oscuro" class="w-full h-full object-cover hidden dark:block transform group-hover:scale-105 transition-transform duration-700">
                             </div>
                         </div>
                     </div>
@@ -345,9 +315,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <div class="lg:w-1/2 order-2 lg:order-1 relative">
                             <div class="absolute inset-0 bg-emerald-600/10 dark:bg-emerald-600/5 rounded-3xl blur-2xl transform rotate-2" aria-hidden="true"></div>
                             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 aspect-video relative group transition-colors duration-300 z-10">
-                                 <div class="absolute top-0 left-0 right-0 bg-black/50 p-2 text-white text-xs text-center opacity-0 group-hover:opacity-100 transition-opacity z-10" aria-hidden="true">mode-hidden-light.png / dark.png</div>
-                                <img src="assets/images/mode-hidden-light.png" alt="Captura de pantalla del modo Segundo Plano en tema claro" class="w-full h-full object-cover dark:hidden transform group-hover:scale-105 transition-transform duration-700">
-                                <img src="assets/images/mode-hidden-dark.png" alt="Captura de pantalla del modo Segundo Plano en tema oscuro" class="w-full h-full object-cover hidden dark:block transform group-hover:scale-105 transition-transform duration-700">
+                                <img src="assets/images/mode-hidden-light.webp" alt="Captura de pantalla del modo Segundo Plano en tema claro" class="w-full h-full object-cover dark:hidden transform group-hover:scale-105 transition-transform duration-700">
+                                <img src="assets/images/mode-hidden-dark.webp" alt="Captura de pantalla del modo Segundo Plano en tema oscuro" class="w-full h-full object-cover hidden dark:block transform group-hover:scale-105 transition-transform duration-700">
                             </div>
                         </div>
                         <div class="lg:w-1/2 order-1 lg:order-2">
@@ -391,7 +360,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                     <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold" aria-hidden="true">1</div>
                                 </div>
                                 <div class="ml-4">
-                                    <h4 class="text-lg font-bold text-slate-900 dark:text-white">Seleccionar y Escuchar</h4>
+                                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Seleccionar y Escuchar</h3>
                                     <p class="mt-2 text-slate-600 dark:text-slate-300">Resalta cualquier texto en una página web. Presiona <kbd class="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded text-sm font-mono text-slate-700 dark:text-slate-200">Alt + R</kbd> o haz clic derecho y selecciona "Leer texto seleccionado".</p>
                                 </div>
                             </div>
@@ -401,7 +370,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                     <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold" aria-hidden="true">2</div>
                                 </div>
                                 <div class="ml-4">
-                                    <h4 class="text-lg font-bold text-slate-900 dark:text-white">Controlar la Reproducción</h4>
+                                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Controlar la Reproducción</h3>
                                     <p class="mt-2 text-slate-600 dark:text-slate-300">Usa el reproductor flotante para pausar, detener o cambiar la velocidad. Puedes moverlo a cualquier parte de la pantalla.</p>
                                 </div>
                             </div>
@@ -411,7 +380,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                     <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold" aria-hidden="true">3</div>
                                 </div>
                                 <div class="ml-4">
-                                    <h4 class="text-lg font-bold text-slate-900 dark:text-white">Cola de Lectura</h4>
+                                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Cola de Lectura</h3>
                                     <p class="mt-2 text-slate-600 dark:text-slate-300">Mientras escuchas, selecciona otro texto y usa el menú contextual para "Agregar a la cola". Se reproducirá automáticamente al terminar el actual.</p>
                                 </div>
                             </div>
@@ -420,9 +389,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                     <!-- Usage Screenshot -->
                     <div class="rounded-2xl shadow-xl overflow-hidden border border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700 aspect-square flex items-center justify-center transition-colors duration-300 relative group">
-                         <div class="absolute top-0 left-0 right-0 bg-black/50 p-2 text-white text-xs text-center opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true">usage-context-light.png / dark.png</div>
-                        <img src="assets/images/usage-context-light.png" alt="Captura de pantalla del menú contextual para agregar a la cola (Claro)" class="w-full h-full object-cover dark:hidden">
-                        <img src="assets/images/usage-context-dark.png" alt="Captura de pantalla del menú contextual para agregar a la cola (Oscuro)" class="w-full h-full object-cover hidden dark:block">
+                        <img src="assets/images/usage-context-light.webp" alt="Captura de pantalla del menú contextual para agregar a la cola (Claro)" class="w-full h-full object-cover dark:hidden">
+                        <img src="assets/images/usage-context-dark.webp" alt="Captura de pantalla del menú contextual para agregar a la cola (Oscuro)" class="w-full h-full object-cover hidden dark:block">
                     </div>
                 </div>
             </div>
@@ -443,15 +411,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </thead>
                         <tbody class="divide-y divide-slate-700 dark:divide-slate-800">
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-left"><kbd class="px-3 py-1 bg-slate-600 dark:bg-slate-700 rounded-lg font-mono text-blue-300">Alt + R</kbd></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-left"><kbd class="px-3 py-1 bg-slate-600 dark:bg-slate-700 rounded-lg font-mono text-blue-200">Alt + R</kbd></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-left text-slate-300">Leer selección / Agregar a cola</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-left"><kbd class="px-3 py-1 bg-slate-600 dark:bg-slate-700 rounded-lg font-mono text-blue-300">Alt + P</kbd></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-left"><kbd class="px-3 py-1 bg-slate-600 dark:bg-slate-700 rounded-lg font-mono text-blue-200">Alt + P</kbd></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-left text-slate-300">Pausar / Reanudar</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-left"><kbd class="px-3 py-1 bg-slate-600 dark:bg-slate-700 rounded-lg font-mono text-blue-300">Alt + S</kbd></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-left"><kbd class="px-3 py-1 bg-slate-600 dark:bg-slate-700 rounded-lg font-mono text-blue-200">Alt + S</kbd></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-left text-slate-300">Detener lectura</td>
                             </tr>
                         </tbody>
@@ -477,7 +445,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <section class="py-24 bg-blue-600 dark:bg-blue-700 transition-colors duration-300" aria-labelledby="cta-heading">
             <div class="max-w-4xl mx-auto px-4 text-center">
                 <h2 id="cta-heading" class="text-3xl font-extrabold text-white mb-4">Empieza a escuchar hoy mismo</h2>
-                <p class="text-blue-100 text-xl mb-10">Instalación segura y oficial a través de Chrome Web Store.</p>
+                <p class="text-white text-xl mb-10">Instalación segura y oficial a través de Chrome Web Store.</p>
                 <a href="https://chromewebstore.google.com/detail/mnnhakddcadkcichdgimoennpkfkcalk" target="_blank" class="bg-white text-blue-600 dark:bg-slate-900 dark:text-blue-400 px-10 py-4 rounded-2xl font-bold text-lg shadow-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors inline-flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 12 12s12-5.373 12-12C24 5.373 18.627 0 12 0zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm-1 3v6l5 3-5 3v6h2v-5l4-2.5v-3L13 10V5h-2z"/></svg>
                     Instalar Extensión
@@ -502,10 +470,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Footer -->
     <footer class="bg-slate-50 border-t border-slate-200 dark:bg-slate-900 dark:border-slate-800 py-12 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="text-slate-500 dark:text-slate-400">Creado por <a href="https://github.com/abdell1999" class="text-blue-600 dark:text-blue-400 font-medium hover:underline focus:outline-none focus:ring-2 focus:ring-brand-500 rounded">Abdell (@abdell1999)</a>.</p>
+            <p class="text-slate-600 dark:text-slate-400">Creado por <a href="https://github.com/abdell1999" class="text-blue-700 dark:text-blue-400 font-medium hover:underline focus:outline-none focus:ring-2 focus:ring-brand-500 rounded">Abdell (@abdell1999)</a>.</p>
             <nav class="flex gap-6" aria-label="Enlaces del pie de página">
-                <a href="mailto:abdull26071999@gmail.com" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded px-1">Soporte</a>
-                <a href="https://github.com/abdell1999" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded px-1">GitHub</a>
+                <a href="mailto:abdull26071999@gmail.com" class="text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded px-1">Soporte</a>
+                <a href="https://github.com/abdell1999" class="text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded px-1">GitHub</a>
             </nav>
         </div>
     </footer>
