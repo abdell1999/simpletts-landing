@@ -19,8 +19,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-WQ896R6D');</script>
 <!-- End Google Tag Manager -->
 
-    <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- AOS CSS for Animations (Deferred) -->
+    <link rel="preload" href="https://unpkg.com/aos@2.3.1/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"></noscript>
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -478,18 +479,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </footer>
 
-    <!-- AOS Library Script -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- AOS Library Script (Deferred) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
 
     <script>
-        // Initialize AOS with Reduced Motion Check
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        AOS.init({
-            once: true,
-            offset: 50,
-            duration: 800,
-            disable: prefersReducedMotion // Disable AOS animations if reduced motion is preferred
+        // Initialize AOS after script loads
+        window.addEventListener('load', function() {
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (typeof AOS !== 'undefined') {
+                AOS.init({
+                    once: true,
+                    offset: 50,
+                    duration: 800,
+                    disable: prefersReducedMotion
+                });
+            }
         });
 
         // Theme Toggle Logic
